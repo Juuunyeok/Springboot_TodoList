@@ -8,9 +8,49 @@
         <input type="submit" value="Add Todo"/>
     </form>
 
-    <ul>
-        <li th:each="todo : ${todos}">
-            <span th:text="${todo.todo}"></span>
-        </li>
-    </ul>
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>할 일</th>
+            <th>수행 여부</th>
+            <th>삭제</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:block th:each="todo : ${todos}" >
+            <td> - </td>
+            <td th:text="${todo.todo}"></td>
+            <td><input type="checkbox"> </td>
+            <td><button id="delete-btn" th:onclick="deleteList([[${todo.id}]])">삭제</button></td>
+        </tr>
+        </tbody>
+    </table>
+<!--    <ul>-->
+<!--        <li th:each="todo : ${todos}">-->
+<!--            <span th:text="${todo.todo}"></span>-->
+<!--            <input type="checkbox">-->
+
+<!--        </li>-->
+<!--    </ul>-->
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+    function deleteList(id){
+        console.log(id)
+        const url = "/deleteList/"+id
+        $.ajax({
+            type:'post',
+            url:url,
+            contentType:'application/json; charset=utf-8'
+        }).done(function() {
+            alert('할 일이 삭제되었습니다.');
+            window.location.href = '/';
+        }).fail(function (error){
+            alert(JSON.stringify(error));
+        });
+    }
+</script>
 </html>

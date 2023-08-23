@@ -2,12 +2,11 @@ package com.example.todolist.Contorller;
 
 import com.example.todolist.domain.ToDo;
 import com.example.todolist.repository.ToDoRepository;
+import com.example.todolist.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +15,9 @@ public class TodoController {
 
     @Autowired
     private ToDoRepository toDoRepository;
+
+    @Autowired
+    private Service service;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -30,6 +32,12 @@ public class TodoController {
         ToDo toDo = new ToDo();
         toDo.setTodo(todo);
         toDoRepository.save(toDo);
+        return "redirect:/";
+    }
+
+    @PostMapping("/deleteList/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        service.delete(id);
         return "redirect:/";
     }
 }
